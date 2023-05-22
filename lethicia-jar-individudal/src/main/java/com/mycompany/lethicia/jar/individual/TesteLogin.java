@@ -50,7 +50,7 @@ public class TesteLogin {
                     String senha = leitor.nextLine();
                     // O símbolo ? na query serão substituídos pelas variáveis "email" e "senha"
 
-                    String selectUsuario = "select *from funcionario where email = ? and senha =? ";
+                    String selectUsuario = "select *from Funcionario where email = ? and senha =? ";
                     Usuario usuarioLogadoBanco = conexao.queryForObject(selectUsuario, new BeanPropertyRowMapper<>(Usuario.class), email, senha);
                     Usuario usuarioLogadoMySql = conexaosql.queryForObject(selectUsuario, new BeanPropertyRowMapper<>(Usuario.class), email, senha);
 
@@ -58,7 +58,7 @@ public class TesteLogin {
                         System.out.println("Login não efetuado! Erro!");
                     } else {
 
-                        List<Usuario> computadoresBanco = conexaosql.query("select idEmpresa, MacAddress from Computador where idEmpresa = ? and MacAddress = ?",
+                        List<Usuario> computadoresBanco = conexao.query("select idEmpresa, MacAddress from Computador where idEmpresa = ? and MacAddress = ?",
                                 new BeanPropertyRowMapper(Usuario.class), usuarioLogadoBanco.getIdEmpresa(), metodosLooca.hostName);
                         List<Usuario> computadoresMySql = conexaosql.query("select idEmpresa, MacAddress from Computador where idEmpresa = ? and MacAddress = ?",
                                 new BeanPropertyRowMapper(Usuario.class), usuarioLogadoMySql.getIdEmpresa(), metodosLooca.hostName);
@@ -70,7 +70,7 @@ public class TesteLogin {
                             System.out.println("vamos cadastrar esse computador");
                             
                             conexaosql.update(String.format("INSERT INTO Computador (sistema_operacional, modelo, MacAddress, total_memoria, total_armazenamento, idEmpresa) values ('%s',' Intel(R) Core(TM) ','%s','%s','%s','%d')", metodosLooca.sistemaOperacional, metodosLooca.hostName, String.valueOf(metodosLooca.totalRam), String.valueOf(metodosLooca.totalDisco), usuarioLogadoMySql.getIdEmpresa()));
-                            conexao.update(String.format("INSERT INTO Computador (sistema_operacional, modelo, MacAddress, total_memoria, total_armazenamento, idEmpresa) values ('%s',' Intel(R) Core(TM)','%s','%s','%s','%d')", metodosLooca.sistemaOperacional, metodosLooca.hostName, String.valueOf(metodosLooca.totalRam), String.valueOf(metodosLooca.totalDisco), usuarioLogadoMySql.getIdEmpresa()));
+                            conexao.update(String.format("INSERT INTO Computador (sistema_operacional, modelo, MacAddress, total_memoria, total_armazenamento, idEmpresa) values ('%s',' Intel(R) Core(TM)','%s','%s','%s','%d')", metodosLooca.sistemaOperacional, metodosLooca.hostName, String.valueOf(metodosLooca.totalRam), String.valueOf(metodosLooca.totalDisco), usuarioLogadoBanco.getIdEmpresa()));
                         } else {
                             System.out.println("computador já está cadastrado");
                         }

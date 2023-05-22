@@ -20,11 +20,11 @@ public class Conexaosql {
 
         
         dataSource​.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        //dataSource​.setUrl("jdbc:mysql://localhost:3306/hemeraTech?autoReconnect=true&useSSL=false");
-        dataSource​.setUrl("jdbc:mysql://localhost:3306/hemeratech?serverTimezone=America/Sao_Paulo");
+        dataSource​.setUrl("jdbc:mysql://3.82.203.132:3306/HemeraTech?autoReconnect=true&useSSL=false");
+        //dataSource​.setUrl("jdbc:mysql://3.83.86.248:3306/hemeratech?serverTimezone=America/Sao_Paulo");
 
         dataSource​.setUsername("root");
-        dataSource​.setPassword("gostosa");
+        dataSource​.setPassword("urubu100");
 
         this.connection = new JdbcTemplate(dataSource);
 
