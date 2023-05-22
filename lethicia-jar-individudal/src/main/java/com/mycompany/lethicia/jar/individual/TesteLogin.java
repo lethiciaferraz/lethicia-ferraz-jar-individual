@@ -27,8 +27,8 @@ public class TesteLogin {
 
         Scanner leitor = new Scanner(System.in);
         int escolha;
-        do {
-            System.out.println("""
+
+        System.out.println("""
                                -------------------------------
                                | Olá bem vindo a Hemera Tech |
                                -------------------------------
@@ -38,47 +38,47 @@ public class TesteLogin {
                                | 0 - Sair                    |
                                -------------------------------
                                """);
-            escolha = leitor.nextInt();
-            leitor.nextLine(); // Consumir a quebra de linha pendente
+        escolha = leitor.nextInt();
+        leitor.nextLine(); // Consumir a quebra de linha pendente
 
-            switch (escolha) {
-                case 1:
-                    System.out.println("Fazer login");
-                    System.out.println("Email: ");
-                    String email = leitor.nextLine();
-                    System.out.println("Senha: ");
-                    String senha = leitor.nextLine();
-                    // O símbolo ? na query serão substituídos pelas variáveis "email" e "senha"
+        switch (escolha) {
+            case 1:
+                System.out.println("ENTREI NO CASE 1");
+                System.out.println("Fazer login");
+                System.out.println("Email: ");
+                String email = leitor.nextLine();
+                System.out.println("Senha: ");
+                String senha = leitor.nextLine();
+                // O símbolo ? na query serão substituídos pelas variáveis "email" e "senha"
 
-                    String selectUsuario = "select *from Funcionario where email = ? and senha =? ";
-                    Usuario usuarioLogadoBanco = conexao.queryForObject(selectUsuario, new BeanPropertyRowMapper<>(Usuario.class), email, senha);
-                    Usuario usuarioLogadoMySql = conexaosql.queryForObject(selectUsuario, new BeanPropertyRowMapper<>(Usuario.class), email, senha);
+                String selectUsuario = "select *from Funcionario where email = ? and senha =? ";
+                List<Usuario> usuarioLogadoBanco = conexao.query(selectUsuario, new BeanPropertyRowMapper<>(Usuario.class), email, senha);
+                List<Usuario> usuarioLogadoMySql = conexaosql.query(selectUsuario, new BeanPropertyRowMapper<>(Usuario.class), email, senha);
 
-                    if (usuarioLogadoMySql == null && usuarioLogadoBanco == null) {
-                        System.out.println("Login não efetuado! Erro!");
+                if (usuarioLogadoMySql.get(0) == null && usuarioLogadoBanco.get(0) == null) {
+                    System.out.println("Login não efetuado! Erro!");
+                } else {
+
+                    List<Usuario> computadoresBanco = conexao.query("select idEmpresa, MacAddress from Computador where idEmpresa = ? and MacAddress = ?",
+                            new BeanPropertyRowMapper(Usuario.class), usuarioLogadoBanco.get(0).getIdEmpresa(), metodosLooca.hostName);
+                    List<Usuario> computadoresMySql = conexaosql.query("select idEmpresa, MacAddress from Computador where idEmpresa = ? and MacAddress = ?",
+                            new BeanPropertyRowMapper(Usuario.class), usuarioLogadoMySql.get(0).getIdEmpresa(), metodosLooca.hostName);
+                    System.out.println(usuarioLogadoMySql);
+                    System.out.println(computadoresMySql);
+                    System.out.println("Login efetuado com sucesso");
+
+                    if (computadoresMySql.isEmpty() && computadoresBanco.isEmpty()) {
+                        System.out.println("vamos cadastrar esse computador");
+
+                        conexaosql.update(String.format("INSERT INTO Computador (sistema_operacional, modelo, MacAddress, total_memoria, total_armazenamento, idEmpresa) values ('%s',' Intel(R) Core(TM) ','%s','%s','%s','%d')", metodosLooca.sistemaOperacional, metodosLooca.hostName, String.valueOf(metodosLooca.totalRam), String.valueOf(metodosLooca.totalDisco), usuarioLogadoMySql.get(0).getIdEmpresa()));
+                        conexao.update(String.format("INSERT INTO Computador (sistema_operacional, modelo, MacAddress, total_memoria, total_armazenamento, idEmpresa) values ('%s',' Intel(R) Core(TM)','%s','%s','%s','%d')", metodosLooca.sistemaOperacional, metodosLooca.hostName, String.valueOf(metodosLooca.totalRam), String.valueOf(metodosLooca.totalDisco), usuarioLogadoBanco.get(0).getIdEmpresa()));
                     } else {
-
-                        List<Usuario> computadoresBanco = conexao.query("select idEmpresa, MacAddress from Computador where idEmpresa = ? and MacAddress = ?",
-                                new BeanPropertyRowMapper(Usuario.class), usuarioLogadoBanco.getIdEmpresa(), metodosLooca.hostName);
-                        List<Usuario> computadoresMySql = conexaosql.query("select idEmpresa, MacAddress from Computador where idEmpresa = ? and MacAddress = ?",
-                                new BeanPropertyRowMapper(Usuario.class), usuarioLogadoMySql.getIdEmpresa(), metodosLooca.hostName);
-                        System.out.println(usuarioLogadoMySql);
-                        System.out.println(computadoresMySql);
-                        System.out.println("Login efetuado com sucesso");
-
-                        if (computadoresMySql.isEmpty() && computadoresBanco.isEmpty()) {
-                            System.out.println("vamos cadastrar esse computador");
-                            
-                            conexaosql.update(String.format("INSERT INTO Computador (sistema_operacional, modelo, MacAddress, total_memoria, total_armazenamento, idEmpresa) values ('%s',' Intel(R) Core(TM) ','%s','%s','%s','%d')", metodosLooca.sistemaOperacional, metodosLooca.hostName, String.valueOf(metodosLooca.totalRam), String.valueOf(metodosLooca.totalDisco), usuarioLogadoMySql.getIdEmpresa()));
-                            conexao.update(String.format("INSERT INTO Computador (sistema_operacional, modelo, MacAddress, total_memoria, total_armazenamento, idEmpresa) values ('%s',' Intel(R) Core(TM)','%s','%s','%s','%d')", metodosLooca.sistemaOperacional, metodosLooca.hostName, String.valueOf(metodosLooca.totalRam), String.valueOf(metodosLooca.totalDisco), usuarioLogadoBanco.getIdEmpresa()));
-                        } else {
-                            System.out.println("computador já está cadastrado");
-                        }
+                        System.out.println("computador já está cadastrado");
                     }
-                    break;
-                default:
-                    System.out.println("Digite uma opção válida!");
-            }
-        } while (escolha != 0);
+                }
+                break;
+            default:
+                System.out.println("Digite uma opção válida!");
+        }
     }
 }

@@ -20,7 +20,7 @@ public class Conexaosql {
 
         
         dataSource​.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        dataSource​.setUrl("jdbc:mysql://35.172.183.82:3306/HemeraTech?autoReconnect=true&useSSL=false");
+        dataSource​.setUrl("jdbc:mysql://localhost:3306/HemeraTech?useTimezone=true&userTimerzone=UTC");
         //dataSource​.setUrl("jdbc:mysql://3.83.86.248:3306/hemeratech?serverTimezone=America/Sao_Paulo");
 
         dataSource​.setUsername("root");
