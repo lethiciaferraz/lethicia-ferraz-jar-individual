@@ -43,8 +43,6 @@ public class TesteLogin {
 
         switch (escolha) {
             case 1:
-                System.out.println("ENTREI NO CASE 1");
-                System.out.println("Fazer login");
                 System.out.println("Email: ");
                 String email = leitor.nextLine();
                 System.out.println("Senha: ");
