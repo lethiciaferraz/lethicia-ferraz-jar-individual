@@ -57,21 +57,19 @@ public class TesteLogin {
                 List<Usuario> computadoresMySql = new ArrayList<>();
                 List<Usuario> computadoresBanco = new ArrayList<>();
 
-                if (usuarioLogadoMySql.isEmpty() && usuarioLogadoBanco.isEmpty()) {
+                if (usuarioLogadoMySql.isEmpty() || usuarioLogadoBanco.isEmpty()) {
                     System.out.println("Login não efetuado! Erro!");
                 } else {
                     if (!usuarioLogadoMySql.isEmpty()) {
                         computadoresMySql = conexaosql.query("select idEmpresa, MacAddress from Computador where idEmpresa = ? and MacAddress = ?",
                                 new BeanPropertyRowMapper<>(Usuario.class), usuarioLogadoMySql.get(0).getIdEmpresa(), metodosLooca.hostName);
-                        System.out.println(usuarioLogadoMySql);
-                        System.out.println(computadoresMySql);
+                      
                     }
 
                     if (!usuarioLogadoBanco.isEmpty()) {
                         computadoresBanco = conexao.query("select idEmpresa, MacAddress from Computador where idEmpresa = ? and MacAddress = ?",
                                 new BeanPropertyRowMapper<>(Usuario.class), usuarioLogadoBanco.get(0).getIdEmpresa(), metodosLooca.hostName);
-                        System.out.println(usuarioLogadoBanco);
-                        System.out.println(computadoresBanco);
+                      
                     }
 
                     System.out.println("Login efetuado com sucesso");
