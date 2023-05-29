@@ -18,6 +18,7 @@ public class ConexaoBanco {
 
         BasicDataSource dataSource = new BasicDataSource();
 
+        
          //CONEXAO SQL SERVER
         dataSource​.setDriverClassName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
         dataSource​.setUrl("jdbc:sqlserver://hemeratech.database.windows.net:1433;database=hemeratech;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;");
