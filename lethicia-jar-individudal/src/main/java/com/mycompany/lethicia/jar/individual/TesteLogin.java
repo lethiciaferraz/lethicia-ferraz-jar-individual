@@ -9,6 +9,10 @@ import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.Timer;
 
+/**
+ *
+ * @author lethi
+ */
 public class TesteLogin {
 
     public static void main(String[] args) {
@@ -80,9 +84,8 @@ public class TesteLogin {
                     } else {
                         System.out.println("Computador já está cadastrado");
                     }
-                    System.out.println("COMEÇAR A REGISTRAR DADOS A CADA X SEGUNDOS");
+                    System.out.println("Vamos começar a registrar os dados a cada 5 segundos");
                     Timer tempo = new Timer();
-                    int intervaloSegundos = 20; // Defina o intervalo desejado em segundos
                     tempo.scheduleAtFixedRate(new TimerTask() {
                         @Override
                         public void run() {
@@ -93,12 +96,12 @@ public class TesteLogin {
                             try {
                                 metodosLooca.inserirDadosAzure(computadoresBanco);
                                 metodosLooca.inserirDadosMySql(computadoresMySql);
-                                System.out.println("Registros sendo capturados");
+                                System.out.println("Registros sendo capturados e inseridos no banco");
                             } catch (Exception e) {
                                 System.out.println("Erro ao inserir dados: " + e.getMessage());
                             }
                         }
-                    }, 0, intervaloSegundos * 1000); // O intervalo é definido em milissegundos
+                    }, 0, 5000); // O intervalo está definido em milissegundos
 
                 }
                 break;
